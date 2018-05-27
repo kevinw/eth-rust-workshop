@@ -1,0 +1,7 @@
+[package]
+name = "ethworkshop"
+version = "0.1.0"
+authors = ["Kevin Watters <kevinwatters@gmail.com>"]
+
+[dependencies]
+web3 = "*"
