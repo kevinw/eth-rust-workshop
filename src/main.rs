@@ -3,7 +3,10 @@ extern crate web3;
 
 //use tokio_core::reactor;
 use web3::futures::Future;
-use web3::types::BlockNumber;
+//use web3::types::BlockNumber;
+
+use std::fs::File;
+use std::io::{BufRead, BufReader};
 
 fn main() {
     let ipc_socket = "/Users/kevin/Library/Application Support/io.parity.ethereum/jsonrpc.ipc";
@@ -11,20 +14,20 @@ fn main() {
 
     let web3 = web3::Web3::new(ipc);
 
+    /*
     let block = web3.eth().block_with_txs(
         BlockNumber::Latest.into(),
     ).wait().unwrap();
-
-    let address = "0x00a329c0648769A73afAc7F9381E08FB43dBEA72".into();
-
-    let balance = web3.eth().balance(address, None).wait().unwrap();
-
-    println!("address {:?} has: {:?} ETH", address, balance);
-    /*
-    {
-        let address = "0x00a329c0648769A73afAc7F9381E08FB43dBEA72".parse().unwrap();
-        let nonce = web3.eth().transaction_count(address, None).wait().unwrap();
-    println!("Number of transactions stent from {:?}: {:?}", address, nonce);
-    }
     */
+
+    for line_result in BufReader::new(File::open("addresses.txt").unwrap()).lines() {
+        let line = line_result.unwrap();
+        if line.is_empty() {
+            continue;
+        }
+
+        let address_str = line.clone();
+        let balance = web3.eth().balance(line.parse().unwrap(), None).wait().unwrap();
+        println!("address {:?} has: {:?} ETH", address_str, balance);
+    }
 }
