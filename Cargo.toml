@@ -5,3 +5,4 @@ authors = ["Kevin Watters <kevinwatters@gmail.com>"]
 
 [dependencies]
 web3 = "*"
+tokio-core = { version = "0.1" }
